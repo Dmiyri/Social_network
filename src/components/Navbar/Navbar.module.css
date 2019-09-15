@@ -1,3 +1,8 @@
+.navs{
+	background-color: darkcyan;
+}
+
+
 .nav{
 	grid-area: n;
 	background-color: darkcyan;

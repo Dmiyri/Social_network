@@ -5,6 +5,7 @@ display: grid;
 
 .dialogsItems {
 	padding: 10px;
+	color: white;
 }
 
 .dialogsItems .active {
