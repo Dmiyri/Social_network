@@ -7,8 +7,8 @@ import Message from "./Message/Message";
 
 const Dialogs = (props) => {
 	let state = props.dialogsPage;
-	let dialogsElements = state.dialogs.map(e => <DialogItem id={e.id} name={e.name}/>)
-	let messagesElements = state.messages.map(e => <Message id={e.id} message={e.message}/>)
+	let dialogsElements = state.dialogs.map(e => <DialogItem id={e.id} key={e.id} name={e.name}/>)
+	let messagesElements = state.messages.map(e => <Message id={e.id} key={e.id} message={e.message}/>)
 	let newMessageBody = state.newMessageBody;
 
 
