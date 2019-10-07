@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './Navbar.module.css';
 import {NavLink} from "react-router-dom";
-import Users from "../Users/Users";
+import Users from "../Users/Users.jsx";
 
 const Navbar = (props) => {
 

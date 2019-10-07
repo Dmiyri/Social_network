@@ -6,7 +6,6 @@ import Post from "./Post/Post";
 const MyPosts = (props) => {
 	let newPostElement = React.createRef();
 	let postsElements = props.profilePage.posts.map(e => <Post id={e.id} message={e.message} like={e.like}/>)
-debugger
 
 	let onAddPost = () => {
 		props.addPost();

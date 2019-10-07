@@ -1,62 +1,64 @@
-import React, {Component} from 'react';
+import React from 'react';
 import s from './Users.module.css';
-import * as axios from "axios";
 import userPhoto from '../../assets/images/users.png'
+import {NavLink} from "react-router-dom";
+import * as axios from "axios";
 
-class Users extends Component {
-
-	componentDidMount() {
-		axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}
-																	&count=${this.props.pageSize}`)
-			.then(response => {
-				this.props.setUsers(response.data.items)
-			});
+const Users = (props) => {
+	let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
+	let pages = [];
+	for (let i = 1; i <= pagesCount; i++) {
+		pages.push(i)
 	}
-
-	onPageChanged = (pageNumber)=>{
-		this.props.setCurrentPage(pageNumber);
-		axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}
-																	&count=${this.props.pageSize}`)
-			.then(response => {
-				this.props.setUsers(response.data.items)
-				this.props.setTotalUserCount(response.data.totalCount)
-			});
-	}
-
-
-	render() {
-		let pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
-		let pages = [];
-		for (let i=1; i<=pagesCount; i++) {
-			pages.push(i)
-		}
-		return (
+	return (
+		<div>
 			<div>
-				<div>
-					{pages.map(p=>{
-						return	(
-							<span className={this.props.currentPage === p && s.selectedPage} onClick={()=>{ this.onPageChanged(p) }}>{p}</span>
-						)})}
+				{pages.map(p => {
+					return (
+						<span className={props.currentPage === p && s.selectedPage} onClick={() => {
+							props.onPageChanged(p)
+						}}>{p}</span>
+					)
+				})}
 
-				</div>
-				<button onClick={this.getUsers}>Get Users</button>
-				{this.props.users.map(u => <div key={u.id}>
+			</div>
+			{/*	<button onClick={this.getUsers}>Get Users</button>*/}
+			{props.users.map(u => <div key={u.id}>
 				<span>
 					<div>
+						<NavLink to={'/profile/'+u.id}>
 						<img src={u.photos.small !== null ? u.photos.small : userPhoto} className={s.usersFoto}/>
-					</div>
+						</NavLink>
+						</div>
 					<div>
 						{u.followed
 							? <button onClick={() => {
-								this.props.unfollow(u.id)
-							}}>Unfollow</button>
+								axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
+									{withCredentials:true,
+									headers: {'API-KEY':'f2e9018e-d208-488e-be78-1225c31cee27'}})
+									.then(response => {
+										if ( response.data.resultCode ===0){
+											props.unfollow(u.id)
+										}
+							})}}>Unfollow</button>
+
 							: <button onClick={() => {
-								this.props.follow(u.id)
+								axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
+									null,
+									{withCredentials:true,
+										headers: {'API-KEY':'f2e9018e-d208-488e-be78-1225c31cee27'}})
+									.then(response => {
+										if ( response.data.resultCode ===0){
+											props.follow(u.id)
+										}
+									});
 							}}>Follow</button>}
+
+
 
 					</div>
 				</span>
-					<span>
+				<span>
 					<span>
 						<div>{u.name}</div>
 						<div>{u.status}</div>
@@ -66,11 +68,10 @@ class Users extends Component {
 						<div>{'u.location.city'}</div>
 					</span>
 				</span>
-				</div>)}
-			</div>
-		)
+			</div>)}
+		</div>
+	)
 
-	}
 }
 
 export default Users;
