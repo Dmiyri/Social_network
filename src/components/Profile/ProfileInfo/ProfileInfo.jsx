@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './ProfileInfo.module.css'
 import Prelouder from "../../common/Prelouder/prelouder";
-
+import ProfileSatus from './ProfileSatus'
 
 const ProfileInfo = (props) => {
 
@@ -16,7 +16,7 @@ const ProfileInfo = (props) => {
 			</div>
 			<div className={s.descriptionBlock}>
 				<img src={props.profile.photos.large}/>
-				ava+dicription
+				<ProfileSatus status = {props.status} updateStatus={props.updateStatus}/>
 			</div>
 		</div>
 

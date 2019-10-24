@@ -9,7 +9,7 @@ const Navbar = (props) => {
 		<div className={s.navs}>
 		<nav className={s.nav}>
 			< div className={s.item}>
-				<NavLink to='/profile' activeClassName={s.activeLink}>Profile</NavLink>
+				<NavLink to='/profile/:userId' activeClassName={s.activeLink}>Profile</NavLink>
 			</div>
 			<div className={`${s.item} ${s.active}`}>
 				<NavLink to='/dialogs' activeClassName={s.activeLink}>Message</NavLink>
